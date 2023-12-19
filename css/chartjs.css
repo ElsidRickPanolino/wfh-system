@@ -1,0 +1,37 @@
+/* CHART JS GRAPHS */
+.charts{
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .daily_chart{
+    width: 20%;
+    background: var(--glass);
+    padding: 20px;
+    border-radius: 10px;
+    border-top: 2px solid #FFFFFF44;
+    border-left: 2px solid #FFFFFF44;
+    box-shadow: -2px -2px 10px #33333377;
+    color: #EEFFFF;
+  }
+  
+  .daily_chart.today{
+    width: 25%;
+  }
+  
+  .chart_navigation{
+    display: flex;
+  }
+  
+  .chart_nav{
+    font-size: 1.4 rem;
+    font-weight: 500;
+    background: var(--gradient1);
+    color: #e2fbff;
+    margin: 0 20px;
+    height: 50px;
+    width: 200px;
+    border: none;
+    border-radius: 10px;
+  }
