@@ -70,10 +70,8 @@ body {
 }
 .week {
   width: 90%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 15px;
-  place-items: center;
+  display: flex;
+  justify-content: center;
 }
 .default_week{
   font-weight: 500;
@@ -84,6 +82,8 @@ body {
   display: grid;
   grid-template-rows: 0.7fr 0.3fr repeat(3, 1fr);
   gap: 8px;
+  width: 220px;
+  margin: 3px 8px;
   height: 260px;
   padding: 25px 12px;
   background-color: #ffffff;
@@ -172,7 +172,23 @@ body {
   background: var(--gradient2);
   box-shadow: 1px 1px 4px 2px #00000044;
   color: #FFFFFF;
+  transition: transform 200ms ease-in-out;
 }
+.submit_btn:hover{
+  transform: scale(1.03);
+  color: #0062ff;
+}
+.disabled_btn{
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  padding: 0 5px;
+  margin-left: 5px;
+  background-color: #8e8e8e;
+  box-shadow: 1px 1px 4px 2px #00000044;
+  color: #FFFFFF;
+}
+
 
 .week_form{
   height: 80px;

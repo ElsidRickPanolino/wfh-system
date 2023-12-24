@@ -10,47 +10,11 @@
     <body>
         <?php include('templates/header.html'); ?>
         <div class="content">
-
-                <?php
-                    include "db_conn.php";
-                    include "functions.php";
-
-                    $date_range_query = "SELECT MIN(DATE) as min_date, MAX(date) as max_date
-                                    FROM employee_schedule";
-                    $date_range = $conn->query($date_range_query);
-                    if ($date_range->num_rows == 1) {
-                        $row = $date_range->fetch_assoc();
-                        $min_date = $row['min_date'];
-                        $max_date = $row['max_date'];
-                    }
-
-                    $current_date = new DateTime();
-                    $base_date = $current_date->format('Y-m-d'); 
-
-                    ?>
-
-                    <form method="post" action="" id="week_form" class="week_form submit_form">
-                        <select class="sel" name="selected_week">
-                            <?php
-                                $weeks_sql = "SELECT DISTINCT
-                                    DATE_ADD(date, INTERVAL 1 - DAYOFWEEK(date) DAY) AS sun,
-                                    DATE_ADD(date, INTERVAL 7 - DAYOFWEEK(date) DAY) AS sat
-                                FROM employee_schedule;";
-                                $week_result = $conn->query($weeks_sql);
-                                if ($week_result->num_rows > 0){
-                                    while($week_row = $week_result -> fetch_assoc()){
-                                        ?>
-                                        <option value="<?php echo $week_row['sun']; ?> " class="opt"
-                                        <?php 
-                                        if(sameWeek($base_date, $week_row['sun'])){echo 'selected'.' class="default_week"';}?>>
-                                        <?php echo date('M d Y', strtotime($week_row['sun']))." - ".date('M d Y', strtotime($week_row['sat'])); ?></option>
-                                        <?php
-                                    }
-                                }
-                            ?>
-                        </select>   
-                        <input type="submit" value="SELECT" class="submit_btn">
-                    </form>
+            <?php 
+            include "db_conn.php";
+            include "functions.php";
+            include('includes/select_week.php');
+            ?>
             <div class="week">
                     <?php
 
@@ -68,10 +32,11 @@
                         }
 
                         if (isset($_POST['selected_week'])) {
+                            echo "<div hidden class='check_form'></div>";
                             
                             $selected_week = $_POST['selected_week'];
 
-                            $sql = "CALL weekly_task('$selected_week');";
+                            $sql = "CALL weekly_task('$selected_week', ".$id_employee.");";
 
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0){
@@ -90,13 +55,16 @@
                                         <p class="task"><?php echo $row['task_name']?></p>
                                         <p class="task_desc"><?php echo $row['task_description']?></p>
 
+                                        <?php
+                                            $is_passed = strtotime($row['date']) <= time();
+                                        ?>
                                         <form action="" method="post" class="submit_form">
                                             <input type="hidden" name="idschedule" value="<?php echo $row['idschedule']; ?>">
-                                            <select name="is_wfh" id="is_wfh" class="sel">
+                                            <select name="is_wfh" id="is_wfh" class="sel" <?php if ($is_passed) echo 'disabled'; ?>>
                                                 <option class="opt" value="0"<?php if ($row['is_wfh'] == '0') echo ' selected'; ?>>ON-SITE</option>
                                                 <option class="opt" value="1"<?php if ($row['is_wfh'] == '1') echo ' selected'; ?>>REMOTE</option>
                                             </select>
-                                            <input type="submit" value="CONFIRM" class="submit_btn">
+                                            <input type="submit" value="CONFIRM" class="<?php echo ($is_passed) ? 'disabled_btn' : 'submit_btn';?>" <?php if ($is_passed) echo 'disabled'; ?>>
                                         </form>
                                     <?php echo "</div>";
                                 }

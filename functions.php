@@ -3,15 +3,14 @@
         $dateTime1 = new DateTime($date1);
         $dateTime2 = new DateTime($date2);
 
-        $startOfWeek = clone $dateTime1;
-        $startOfWeek->modify('last sunday');
+        $dateTime1->modify('+1 day');
+        $dateTime2->modify('+1 day');
 
-        $endOfWeek = clone $startOfWeek;
-        $endOfWeek->modify('+6 days');
+        $weekYear1 = $dateTime1->format('YW');
+        $weekYear2 = $dateTime2->format('YW');
 
-        return $dateTime2 >= $startOfWeek && $dateTime2 <= $endOfWeek;
+        return $weekYear1 === $weekYear2;
     }
-
     function getSunday($date) {
         $dateTime = new DateTime($date);
         $dateTime->setISODate($dateTime->format('Y'), $dateTime->format('W'), 7);
@@ -32,4 +31,7 @@
     
         return $dateTime;
     }
+
+
+
 ?>
