@@ -60,7 +60,7 @@
                                         ?>
                                         <form action="" method="post" class="submit_form">
                                             <input type="hidden" name="idschedule" value="<?php echo $row['idschedule']; ?>">
-                                            <select name="is_wfh" id="is_wfh" class="sel" <?php if ($is_passed) echo 'disabled'; ?>>
+                                            <select name="is_wfh" id="is_wfh" class="sel" <?php if ($is_passed || $row['is_remote'] == 0) echo 'disabled'; ?>>
                                                 <option class="opt" value="0"<?php if ($row['is_wfh'] == '0') echo ' selected'; ?>>ON-SITE</option>
                                                 <option class="opt" value="1"<?php if ($row['is_wfh'] == '1') echo ' selected'; ?>>REMOTE</option>
                                             </select>
